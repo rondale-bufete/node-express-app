@@ -1,5 +1,6 @@
 const express = require ('express')
 const mongoose = require('mongoose')
+const cors = require('cors');
 
 require('dotenv').config()
 
@@ -10,6 +11,26 @@ const port = process.env.PORT || 5000
 
 // EXPRESS APP
 const app = express()
+
+// MIDDLEWARE
+// VERY IMPORTANT: Place cors middleware BEFORE your routes
+const allowedOrigins = [
+  'https://workout-planner-zc9k.onrender.com', // Your frontend URL
+  'http://localhost:3000' // For local development (optional but good to have)
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) { // Allow requests without origin (like Postman) or from allowed origins
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // If you're using cookies or authorization headers, set this to true
+  })
+);
 
 // MIDDLEWARE
 app.use(express.json())
