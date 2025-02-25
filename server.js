@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     app.listen(port, () => { 
         // Listen for Requests
-        console.log("DB up and running, Requests are open on port", process.env.PORT)
+        console.log("DB up and running, Requests are open on port", port)
     })  
 })
 .catch((error) => {
