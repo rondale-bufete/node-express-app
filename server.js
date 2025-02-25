@@ -12,30 +12,35 @@ const port = process.env.PORT || 5000
 // EXPRESS APP
 const app = express()
 
-// MIDDLEWARE
-// VERY IMPORTANT: Place cors middleware BEFORE your routes
+// CORS / MIDDLEWARE
 const allowedOrigins = [
-  'https://workout-planner-zc9k.onrender.com', // Your frontend URL
-  'http://localhost:3000' // For local development (optional but good to have)
+  'https://workout-planner-zc9k.onrender.com',
+  'http://localhost:3000'
 ];
 
+// ALLOW TESTS WITHOUT ORIGIN
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) { // Allow requests without origin (like Postman) or from allowed origins
+      if (!origin || allowedOrigins.includes(origin)) { 
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
-    credentials: true, // If you're using cookies or authorization headers, set this to true
+    credentials: true, // For authorization headers
   })
 );
 
 // MIDDLEWARE
 app.use(express.json())
 app.use((req, res, next) => {
-    console.log(req.method, ": Passed")
+    if(req.method){
+       return console.log(req.method, ": ok") 
+    }
+    else {
+        console.log(req.method, ": failed") 
+    }
     next()
 })
 
@@ -48,7 +53,7 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     app.listen(port, () => { 
         // Listen for Requests
-        console.log(`DB up and running, Requests are open on port ${port}`)
+        console.log(`DB Connected, Listening on ${port}`)
     })  
 })
 .catch((error) => {
