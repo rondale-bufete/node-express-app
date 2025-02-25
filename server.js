@@ -6,7 +6,7 @@ require('dotenv').config()
 const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/userRoutes')
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 5000
 
 // EXPRESS APP
 const app = express()
@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     app.listen(port, () => { 
         // Listen for Requests
-        console.log("DB up and running, Requests are open on port", port)
+        console.log(`DB up and running, Requests are open on port ${port}`)
     })  
 })
 .catch((error) => {
